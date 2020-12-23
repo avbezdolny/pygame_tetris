@@ -79,14 +79,6 @@ class Game:
         self.score = 0
         self.level = 1
 
-        # load record
-        try:
-            with open(join(expanduser('~'), 'pygame_tetris.dat'),
-                      'rb') as f:  # заменить путь на 'pygame_tetris.dat' для android
-                self.best = pickle.load(f)
-        except FileNotFoundError:
-            self.best = 0
-
         # текст
         self.game_font = pygame.font.Font(join(resourcePath(), 'PressStart2P-Regular.ttf'), int(self.TILE / 1.5))
         self.next_text = self.game_font.render('next', True, WHITE)
@@ -204,7 +196,44 @@ class Game:
         self.dx = 0
         self.dy = 0
         self.rotate = False
+        
+        # load data
+        try:
+            with open(join(expanduser('~'), 'pygame_tetris.dat'), 'rb') as f:  # заменить путь на 'pygame_tetris.dat' для android
+                data = pickle.load(f)
+                self.best = data['best']
+                self.score = data['score']
+                self.level = data['level']
+                self.game_over = data['game_over']
+                self.anim_speed = data['anim_speed']
+                self.sound = data['sound']
+                self.music = data['music']
+                self.color = data['color']
+                self.next_color = data['next_color']
+                self.figure = data['figure']
+                self.next_figure = data['next_figure']
+                self.field = data['field']
+        except:  # FileNotFoundError and other
+            pass
 
+    def save_data(self):
+        with open(join(expanduser('~'), 'pygame_tetris.dat'), 'wb') as f:  # заменить путь на 'pygame_tetris.dat' для android
+            data = {
+                'best' : self.best,
+                'score' : self.score,
+                'level' : self.level,
+                'game_over' : self.game_over,
+                'anim_speed' : self.anim_speed,
+                'sound' : self.sound,
+                'music' : self.music,
+                'color' : self.color,
+                'next_color' : self.next_color,
+                'figure' : self.figure,
+                'next_figure' : self.next_figure,
+                'field' : self.field
+            }
+            pickle.dump(data, f)
+    
     def new_game(self):
         self.select = 2
         self.figure, self.next_figure = deepcopy(random.choice(self.figures)), deepcopy(random.choice(self.figures))
@@ -220,6 +249,7 @@ class Game:
         self.info = False
 
     def exit(self):
+        self.save_data()
         pygame.quit()
         sys.exit(0)
 
@@ -269,6 +299,7 @@ class Game:
         self.select = 1
         self.anim_limit = FPS
         if self.sound: self.sound_pause.play()
+        self.save_data()
         return True
 
     def get_info(self):
@@ -652,11 +683,7 @@ class Game:
             self.score += lines
             if lines != 0:
                 if self.sound: self.sound_line.play()
-                if self.score > self.best:
-                    self.best = self.score
-                    with open(join(expanduser('~'), 'pygame_tetris.dat'),
-                              'wb') as f:  # заменить путь на 'pygame_tetris.dat' для android
-                        pickle.dump(self.best, f)
+                if self.score > self.best: self.best = self.score
 
                 next_level = False
                 s = ((i + 1) * 10 for i in range(100))
