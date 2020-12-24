@@ -208,11 +208,13 @@ class Game:
                 self.anim_speed = data['anim_speed']
                 self.sound = data['sound']
                 self.music = data['music']
+                if not self.music: pygame.mixer.music.pause()
                 self.color = data['color']
                 self.next_color = data['next_color']
                 self.figure = data['figure']
                 self.next_figure = data['next_figure']
                 self.field = data['field']
+                self.pause = True
         except:  # FileNotFoundError and other
             pass
 
