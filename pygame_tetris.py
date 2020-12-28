@@ -471,7 +471,7 @@ class Game:
                         self.block = True
 
                 # window
-                if event.type == WINDOWFOCUSLOST:
+                if event.type == WINDOWFOCUSLOST and not self.pause:
                     self.get_pause()
 
             # Графика
