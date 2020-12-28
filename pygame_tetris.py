@@ -361,7 +361,7 @@ class Game:
                         self.set_music()
                     if event.key == pygame.K_s:
                         self.set_sound()
-                    if event.key == pygame.K_ESCAPE or event.key == 27:  # android back_button
+                    if event.key == pygame.K_ESCAPE or event.key == pygame.K_AC_BACK:  # android back_button
                         self.get_pause()
                     if event.key == pygame.K_i:
                         self.get_info()
@@ -471,9 +471,8 @@ class Game:
                         self.block = True
 
                 # window
-                if event.type == WINDOWEVENT:  # experimental
-                    if event.event == WINDOWEVENT_FOCUS_LOST:
-                        self.get_pause()
+                if event.type == WINDOWFOCUSLOST:
+                    self.get_pause()
 
             # Графика
             self.windowSurface.fill(BLACK)
