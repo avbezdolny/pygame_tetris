@@ -24,5 +24,5 @@ Touch:
 \<Long Swipe Down\> - drop  
 
 Powered by PyGame ;)  
-(c) A.V.Bezdolny 2020  
+(c) A.V.Bezdolny, 2020  
 \* ver. 1.0 \*
