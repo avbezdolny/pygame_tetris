@@ -1,6 +1,6 @@
 # TETRIS
 
-![tetris](tetris.png)
+![TETRIS](tetris.png)
 
 Collect as many lines of tetramino shapes as possible until the playing field is full.  
 
